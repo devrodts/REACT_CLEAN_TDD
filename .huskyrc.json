@@ -1,0 +1,6 @@
+{
+    "pre-commit":[
+        "lint-staged",
+        "git add"
+    ]
+}
