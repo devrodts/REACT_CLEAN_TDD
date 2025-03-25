@@ -8,7 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest --watchAll --passWithNoTests"
+    "test": "jest --watchAll --passWithNoTests",
+    "test:watch": "yarn test -- --watch",
+    "test:staged": "yarn test -- --findRelatedTests",
+    "test:ci": "yarn test -- --coverage"  
   },
   "dependencies": {
     "react": "^19.0.0",
