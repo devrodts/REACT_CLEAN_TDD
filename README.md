@@ -1,54 +1,83 @@
 # React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este projeto é uma aplicação React utilizando TypeScript e Vite para desenvolvimento rápido e com Hot Module Replacement (HMR). O projeto foi estruturado seguindo conceitos de TDD (Desenvolvimento Orientado a Testes), DDD (Design Orientado a Domínio) e os princípios SOLID para garantir um código bem organizado, modular e de fácil manutenção.
 
-Currently, two official plugins are available:
+## Estrutura do Projeto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **public/**  
+  Arquivos estáticos, como imagens e ícones (ex.: `vite.svg`).
 
-## Expanding the ESLint configuration
+- **src/**  
+  Código-fonte da aplicação.
+  - **assets/**  
+    Recursos como imagens (ex.: `react.svg`).
+  - **data/**  
+    Camada de implementação de casos de uso e protocolos de comunicação:
+    - **protocols/**  
+      Interfaces e contratos, por exemplo, [`HttpPostClient`](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\src\data\protocols\http\HttpPostClient.ts) define o contrato para clientes HTTP.
+    - **usecases/**  
+      Implementações de casos de uso, por exemplo, [`RemoteAuthentication`](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\src\data\usecases\authentication\RemoteAuthentication.ts) implementa a autenticação via protocolo HTTP.
+    
+  - **domain/**  
+    Representa o núcleo da aplicação (domínio):
+    - **models/**  
+      Modelos de dados, como [`AccountModel`](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\src\domain\models\AccountModel.ts).
+    - **usecases/**  
+      Interfaces que definem os contratos de negócio, como em [`Authentication`](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\src\domain\usecases\Authentication.ts).
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+  - Componentes React e estilos (ex.: `App.tsx`, `index.css`, `App.css`).
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **test/**  
+  Arquivos de teste, garantindo o TDD. Exemplo: [test.spec.ts](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\src\test\test.spec.ts) contém testes básicos.
+  
+- **Configurações e scripts**  
+  Arquivos como:
+  - `package.json`: scripts para desenvolvimento, build, lint e testes.
+  - `tsconfig*.json`: configurações do compilador TypeScript.
+  - `vite.config.ts`: configuração do Vite.
+  - `eslint.config.js`: regras de lint com integração aos plugins do ESLint para React e TypeScript.
+  - Arquivos de configuração do Jest, garantindo testes com [`ts-jest`](c:\Users\dev_r\Documents\reactjs_apps\react_tdd_clean_code\jest.config.ts).
+
+## Boas Práticas Utilizadas
+
+- **TDD (Desenvolvimento Orientado a Testes):**  
+  Os testes são escritos para garantir que o comportamento da aplicação esteja sempre conforme o esperado.
+
+- **DDD (Design Orientado a Domínio):**  
+  A separação entre a camada de domínio (regras de negócio e modelos) e a camada de dados (implementações de casos de uso e protocolos) garante uma aplicação bem organizada e com responsabilidade única.
+
+- **SOLID Principles:**  
+  Cada parte do código segue os princípios SOLID, garantindo:
+  - **Single Responsibility:** Cada classe ou módulo tem uma única responsabilidade.
+  - **Open/Closed:** Componentes estão abertos à extensão, fechados à modificação.
+  - **Liskov Substitution:** Interfaces claras para substituição.
+  - **Interface Segregation:** Interfaces são específicas e coesas.
+  - **Dependency Inversion:** Dependências abstraídas via interfaces, facilitando testes e manutenção.
+
+- **Ferramentas de Qualidade:**  
+  Utilização de ESLint, Prettier e Husky para manter o padrão do código e impedir problemas durante os commits.
+
+## Como Rodar o Projeto Localmente
+
+1. **Instalar Dependências:**  
+   Certifique-se de ter o [Node.js](https://nodejs.org/) instalado. Em seguida, instale as dependências:
+   
+```bash
+   yarn install 
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+2. **Rodar em dev:**
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+yarn dev
+```
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+3. **Testes:**
+```bash
+yarn test
+```
+
+4. **Build:**
+```bash 
+yarn build 
 ```
