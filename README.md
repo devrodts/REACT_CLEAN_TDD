@@ -63,7 +63,7 @@ Este projeto é uma aplicação React utilizando TypeScript e Vite para desenvol
    Certifique-se de ter o [Node.js](https://nodejs.org/) instalado. Em seguida, instale as dependências:
    
 ```bash
-   yarn install 
+yarn install 
 ```
 
 2. **Rodar em dev:**
