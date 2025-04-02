@@ -8,5 +8,8 @@ module.exports = {
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     testMatch: ['**/*.(test|spec).(ts|tsx)'],
+    modulNameMapper:{
+      '@/(.*)' : '<rootDir>/src/$1'      
+    }
 };
 
