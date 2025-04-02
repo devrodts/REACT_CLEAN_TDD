@@ -4,6 +4,7 @@ import { faker } from '@faker-js/faker';
 import { mockAuthentication } from "../../../domain/test/MockAuthentication";
 import { InvalidCredentialError } from "../../../domain/errors/InvalidCredentialsHelper";
 import { HttpStatusCode } from "../../protocols/HttpResponse";
+import { UnexpectedError } from "../../../domain/errors/UnexpectedError/UnexpectedError";
 
 
 type SutTypes = {
@@ -44,6 +45,18 @@ describe("RemoteAuthentication", () => {
         };
         const promise = await  sut.auth(mockAuthentication());
         await expect(promise).rejects.toThrow(new InvalidCredentialError())
+    })
+
+
+    it("Should throw Unxpected Error if HttpPostClient return 400", async () => {
+        const {sut, httpPostClientSpy} = makeSut();
+        httpPostClientSpy.response = { 
+            statusCode: HttpStatusCode.bad_request 
+        };
+        const promise = await sut.auth(mockAuthentication());
+        await expect(promise).rejects.toThrow(
+          new UnexpectedError("Unexpected error")
+        );
     })
     
 });
