@@ -10,8 +10,9 @@ export enum HttpStatusCode{
     ok = 200,
     bad_request = 400,
 }
-export type HttpResponse = {
+export type HttpResponse<T> = {
     statusCode: number;
-    body?: unknown;
+    body?:T;
+
 
 }

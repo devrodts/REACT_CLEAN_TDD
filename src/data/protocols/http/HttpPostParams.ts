@@ -1,5 +1,4 @@
-export type HttpPostParams = {
+export type HttpPostParams<T> = {
     url: string;
-    body?: object;
-    response?: object; 
+    body?: T; 
 }

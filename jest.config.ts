@@ -4,11 +4,17 @@ module.exports = {
     coverageDirectory: 'coverage',
     testEnvironment: 'node',
     transform: {
-        '^.+\\.(ts|tsx)$': 'ts-jest',
+        '^.+\\.(ts|tsx)$': [
+            'ts-jest', 
+            {
+                isolatedModules: true,
+                esModuleInterop: true
+            }
+        ]
     },
     moduleFileExtensions: ['ts', 'js', 'json', 'node'],
     testMatch: ['**/*.(test|spec).(ts|tsx)'],
-    modulNameMapper:{
+    moduleNameMapper:{
       '@/(.*)' : '<rootDir>/src/$1'      
     }
 };
