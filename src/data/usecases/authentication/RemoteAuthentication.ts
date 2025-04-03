@@ -1,12 +1,13 @@
-import { InvalidCredentialError } from "../../../domain/errors/InvalidCredentialsHelper";
+// import { InvalidCredentialError } from "../../../domain/errors/InvalidCredentialsHelper";
 import { AuthenticationParams } from "../../../domain/usecases/Authentication";
 import { HttpPostClient } from "../../protocols/http/HttpPostClient";
 import { HttpStatusCode } from "../../protocols/HttpResponse";
 import { UnexpectedError } from "../../../domain/errors/UnexpectedError/UnexpectedError";
-import { ForbiddenError } from "../../../domain/errors/ForbiddenError";
+// import { ForbiddenError } from "../../../domain/errors/ForbiddenError";
 import { NotFoundError } from "../../../domain/errors/NotFoundError";
 import { AccountModel } from "../../../domain/models/AccountModel";
 import { Authentication } from "../../../domain/usecases/Authentication";
+import { InvalidCredentialError } from "../../../domain/errors/InvalidCredentialsHelper";
 
 export class RemoteAuthentication implements Authentication{
   constructor(
@@ -25,13 +26,11 @@ export class RemoteAuthentication implements Authentication{
       case HttpStatusCode.ok:
         return httpResponse.body;
       case HttpStatusCode.bad_request:
-        throw new UnexpectedError(httpResponse.statusCode.toString()) ;
+        throw new UnexpectedError("Unexpected error");
       case HttpStatusCode.unathorized:
         throw new InvalidCredentialError();
-      case HttpStatusCode.forbidden:
-        throw new ForbiddenError("Access Denied.");
       case HttpStatusCode.not_found:
-        throw new NotFoundError("data not found.");
+        throw new NotFoundError("Data not found");
       default:
         throw new UnexpectedError("Unexpected error");
     }

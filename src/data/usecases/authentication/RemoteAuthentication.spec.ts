@@ -20,6 +20,10 @@ const makeSut = (url : string = faker.internet.url()): SutTypes => {
       AuthenticationParams,
       AccountModel
     >();
+    
+    httpPostClientSpy.response = {
+        statusCode: HttpStatusCode.ok
+    };
     const sut = new RemoteAuthentication(url, httpPostClientSpy);
     return {
         sut,
@@ -44,37 +48,33 @@ describe("RemoteAuthentication", () => {
         expect(httpPostClientSpy.body).toEqual(authenticationParams);
     });
 
-    it("Should trow InvalidCredentialError if HttpPostClient return 401", async() => {
+    it("Should throw InvalidCredentialError if HttpPostClient return 401", async() => {
         const {sut, httpPostClientSpy} = makeSut();
         httpPostClientSpy.response = { 
             statusCode: HttpStatusCode.unathorized 
         };
-        const promise = await  sut.auth(mockAuthentication());
-        await expect(promise).rejects.toThrow(new InvalidCredentialError())
-    })
+        const promise = sut.auth(mockAuthentication());
+        await expect(promise).rejects.toThrow(new InvalidCredentialError());
+    });
 
 
-    it("Should throw Unxpected Error if HttpPostClient return 400", async () => {
+    it("Should throw Unexpected Error if HttpPostClient return 400", async () => {
         const {sut, httpPostClientSpy} = makeSut();
         httpPostClientSpy.response = { 
             statusCode: HttpStatusCode.bad_request 
         };
-        const promise = await sut.auth(mockAuthentication());
-        await expect(promise).rejects.toThrow(
-          new UnexpectedError("Unexpected error")
-        );
-    })
+        const promise = sut.auth(mockAuthentication());
+        await expect(promise).rejects.toThrow(new UnexpectedError("Unexpected error"));
+    });
 
-    it("Should trow Unxpected Error if HttpPostClient returns 404", async () => {
+    it("Should throw NotFoundError if HttpPostClient returns 404", async () => {
         const {sut, httpPostClientSpy} = makeSut();
         httpPostClientSpy.response = { 
             statusCode: HttpStatusCode.not_found 
         };
-        const promise = await sut.auth(mockAuthentication());
-        await expect(promise).rejects.toThrow(
-          new NotFoundError("Data not found")
-        );
-    })
+        const promise = sut.auth(mockAuthentication());
+        await expect(promise).rejects.toThrow(new NotFoundError("Data not found"));
+    });
 
     it("Should return an Account Model if Http Post Client return 200", async () => {
         const {sut, httpPostClientSpy} = makeSut();
@@ -85,5 +85,5 @@ describe("RemoteAuthentication", () => {
         };
         const account = await sut.auth(mockAuthentication());
         expect(account).toEqual(httpPostClientSpy.response.body);
-    })
+    });
 });
